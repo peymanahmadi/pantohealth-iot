@@ -3,7 +3,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { getRabbitMQConfig } from '@pantohealth/config';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -15,8 +15,19 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-  // Connect to RabbitMQ as a microservice
-  app.connectMicroservice(getRabbitMQConfig(configService));
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: [
+        configService.get<string>('RABBITMQ_URL', 'amqp://localhost:5672'),
+      ],
+      queue: configService.get<string>('RABBITMQ_QUEUE', 'x-ray'),
+      queueOptions: {
+        durable: true,
+      },
+      noAck: false,
+    },
+  });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('PANTOhealth X-Ray API')

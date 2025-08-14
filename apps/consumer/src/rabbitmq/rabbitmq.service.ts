@@ -1,7 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
-import { getRabbitMQConfig } from '@pantohealth/config/rabbitmq.config';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 
 @Injectable()
 export class RabbitMQService {
@@ -9,7 +12,21 @@ export class RabbitMQService {
   private client: ClientProxy;
 
   constructor(private readonly configService: ConfigService) {
-    this.client = ClientProxyFactory.create(getRabbitMQConfig(configService));
+    this.client = ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [
+          this.configService.get<string>(
+            'RABBITMQ_URL',
+            'amqp://localhost:5672',
+          ),
+        ],
+        queue: configService.get<string>('RABBITMQ_QUEUE', 'x-ray'),
+        queueOptions: {
+          durable: true,
+        },
+      },
+    });
   }
 
   async onModuleInit() {
@@ -22,7 +39,6 @@ export class RabbitMQService {
     this.logger.log('Disconnected from RabbitMQ');
   }
 
-  // Method to send messages (useful for producer app or future extensions)
   async sendMessage(pattern: string, data: any) {
     try {
       await this.client.emit(pattern, data).toPromise();

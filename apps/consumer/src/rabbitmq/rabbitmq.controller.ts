@@ -18,6 +18,9 @@ export class RabbitMQController {
 
   @MessagePattern('x-ray')
   async handleXRayMessage(@Payload() message: any, @Ctx() context: RmqContext) {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+
     try {
       const dto = plainToClass(XRayMessageDto, message);
       const errors = await validate(dto);
@@ -31,9 +34,7 @@ export class RabbitMQController {
       this.logger.log(`Processed message for deviceId: ${dto.deviceId}`);
 
       // Acknowledge the message
-      // const channel = context.getChannelRef();
-      // const originalMsg = context.getMessage();
-      // channel.ack(originalMsg);
+      channel.ack(originalMsg);
     } catch (error) {
       this.logger.error(`Error processing message: ${error.message}`);
     }
