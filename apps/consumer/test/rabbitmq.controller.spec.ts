@@ -1,94 +1,11 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { RmqContext } from '@nestjs/microservices';
-// import { ConflictException } from '@nestjs/common';
-// import { RabbitMQController } from '../src/rabbitmq/rabbitmq.controller';
-// import { SignalsService } from '../src/signals/signals.service';
-// import { XRayMessageDto } from '../src/dtos/xray-message.dto';
-// import { XRayDocument } from '../src/signals/signals.schema';
-
-// describe('RabbitMQController', () => {
-//   let controller: RabbitMQController;
-//   let service: jest.Mocked<SignalsService>;
-
-//   const mockXRayDto: XRayMessageDto = {
-//     deviceId: '66bb584d4ae73e488c30a072',
-//     time: 1735683480000,
-//     data: [{ time: 1735683480000, coordinatesAndSpeed: [10, 20, 30] }],
-//   };
-
-//   const mockXRayDocument: XRayDocument = {
-//     _id: 'mockId',
-//     deviceId: mockXRayDto.deviceId,
-//     time: mockXRayDto.time,
-//     dataLength: mockXRayDto.data.length,
-//     dataVolume: Buffer.byteLength(JSON.stringify(mockXRayDto.data)),
-//     data: mockXRayDto.data,
-//   } as any;
-
-//   const mockRmqContext = {
-//     getChannelRef: jest.fn().mockReturnValue({
-//       ack: jest.fn(),
-//     }),
-//     getMessage: jest.fn().mockReturnValue({}),
-//   } as unknown as RmqContext;
-
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       controllers: [RabbitMQController],
-//       providers: [
-//         {
-//           provide: SignalsService,
-//           useValue: {
-//             create: jest.fn().mockResolvedValue(mockXRayDocument),
-//           },
-//         },
-//       ],
-//     }).compile();
-
-//     controller = module.get<RabbitMQController>(RabbitMQController);
-//     service = module.get(SignalsService) as jest.Mocked<SignalsService>;
-//   });
-
-//   afterEach(() => {
-//     jest.clearAllMocks();
-//   });
-
-//   describe('handleXRayMessage', () => {
-//     it('should process valid x-ray message and acknowledge', async () => {
-//       await controller.handleXRayMessage(mockXRayDto, mockRmqContext);
-//       expect(service.create).toHaveBeenCalledWith(mockXRayDto);
-//       expect(mockRmqContext.getChannelRef().ack).toHaveBeenCalledWith(
-//         mockRmqContext.getMessage(),
-//       );
-//     });
-
-//     it('should not acknowledge invalid message', async () => {
-//       const invalidDto = { ...mockXRayDto, deviceId: '' }; // Invalid deviceId
-//       await controller.handleXRayMessage(invalidDto, mockRmqContext);
-//       expect(service.create).not.toHaveBeenCalled();
-//       expect(mockRmqContext.getChannelRef().ack).not.toHaveBeenCalled();
-//     });
-
-//     it('should handle ConflictException and not acknowledge', async () => {
-//       service.create.mockRejectedValueOnce(new ConflictException());
-//       await controller.handleXRayMessage(mockXRayDto, mockRmqContext);
-//       expect(service.create).toHaveBeenCalledWith(mockXRayDto);
-//       expect(mockRmqContext.getChannelRef().ack).not.toHaveBeenCalled();
-//     });
-//   });
-// });
-
 import { Test, TestingModule } from '@nestjs/testing';
-// import { RabbitMQController } from './rabbitmq.controller';
-// import { SignalsService } from '../signals/signals.service';
 import { plainToClass } from 'class-transformer';
-// import { XRayMessageDto } from '../dtos/xray-message.dto';
 import { validate } from 'class-validator';
 import { Logger } from '@nestjs/common';
 import { RmqContext } from '@nestjs/microservices';
 import { RabbitMQController } from '../src/rabbitmq/rabbitmq.controller';
 import { SignalsService } from '../src/signals/signals.service';
-import { XRayMessageDto } from '../src/dtos/xray-message.dto';
+import { XRayMessageDto } from '@pantohealth/dtos';
 
 describe('RabbitMQController', () => {
   let controller: RabbitMQController;
