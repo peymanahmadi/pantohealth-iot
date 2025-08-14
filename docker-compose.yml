@@ -1,0 +1,57 @@
+# version: '3.8'
+
+services:
+  consumer:
+    build:
+      context: .
+      dockerfile: apps/consumer/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - rabbitmq
+      - mongodb
+    env_file:
+      - .env
+    networks:
+      - pantohealth-network
+    restart: unless-stopped
+
+  producer:
+    build:
+      context: .
+      dockerfile: apps/producer/Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+    networks:
+      - pantohealth-network
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672" # AMQP
+      - "15672:15672" # Management UI
+    networks:
+      - pantohealth-network
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - pantohealth-network
+    restart: unless-stopped
+
+networks:
+  pantohealth-network:
+    driver: bridge
+
+volumes:
+  mongodb-data:

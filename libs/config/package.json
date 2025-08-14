@@ -1,0 +1,6 @@
+{
+  "name": "@pantohealth/config",
+  "version": "1.0.0",
+  "main": "src/rabbitmq.config.ts",
+  "types": "src/rabbitmq.config.ts"
+}
