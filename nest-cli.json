@@ -4,7 +4,7 @@
   "sourceRoot": "apps/consumer/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/consumer/tsconfig.app.json"
   },
   "monorepo": true,
@@ -26,24 +26,6 @@
       "sourceRoot": "apps/producer/src",
       "compilerOptions": {
         "tsConfigPath": "apps/producer/tsconfig.app.json"
-      }
-    },
-    "config": {
-      "type": "library",
-      "root": "libs/config",
-      "entryFile": "index",
-      "sourceRoot": "libs/config/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/config/tsconfig.lib.json"
-      }
-    },
-    "dtos": {
-      "type": "library",
-      "root": "libs/dtos",
-      "entryFile": "index",
-      "sourceRoot": "libs/dtos/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/dtos/tsconfig.lib.json"
       }
     }
   }

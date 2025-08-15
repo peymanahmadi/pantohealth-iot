@@ -1,6 +1,0 @@
-{
-  "name": "@pantohealth/dtos",
-  "version": "1.0.0",
-  "main": "src/xray-message.dto.ts",
-  "types": "src/xray-message.dto.ts"
-}

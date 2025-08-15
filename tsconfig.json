@@ -20,12 +20,6 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@pantohealth/config": ["libs/config/src"],
-      "@pantohealth/config/*": ["libs/config/src/*"],
-      "@pantohealth/dtos": ["libs/dtos/src"],
-      "@pantohealth/dtos/*": ["libs/dtos/src/*"]
-    }
+    "noFallthroughCasesInSwitch": false
   }
 }
