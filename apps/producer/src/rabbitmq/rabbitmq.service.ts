@@ -1,8 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
-import { getRabbitMQConfig } from '@pantohealth/config';
-import { XRayMessageDto } from '@pantohealth/dtos';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
+import { XRayMessageDto } from '../dtos/xray-message.dto';
 
 @Injectable()
 export class RabbitMQService {
@@ -10,7 +13,21 @@ export class RabbitMQService {
   private client: ClientProxy;
 
   constructor(private readonly configService: ConfigService) {
-    this.client = ClientProxyFactory.create(getRabbitMQConfig(configService));
+    this.client = ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [
+          this.configService.get<string>(
+            'RABBITMQ_URL',
+            'amqp://localhost:5672',
+          ),
+        ],
+        queue: configService.get<string>('RABBITMQ_QUEUE', 'x-ray'),
+        queueOptions: {
+          durable: true,
+        },
+      },
+    });
   }
 
   async onModuleInit() {

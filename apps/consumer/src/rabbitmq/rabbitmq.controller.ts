@@ -8,7 +8,7 @@ import {
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { SignalsService } from '../signals/signals.service';
-import { XRayMessageDto } from '@pantohealth/dtos';
+import { XRayMessageDto } from '../dtos/xray-message.dto';
 
 @Controller()
 export class RabbitMQController {

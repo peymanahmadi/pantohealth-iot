@@ -5,7 +5,7 @@ import { Logger } from '@nestjs/common';
 import { RmqContext } from '@nestjs/microservices';
 import { RabbitMQController } from '../src/rabbitmq/rabbitmq.controller';
 import { SignalsService } from '../src/signals/signals.service';
-import { XRayMessageDto } from '@pantohealth/dtos';
+import { XRayMessageDto } from '../src/dtos/xray-message.dto';
 
 describe('RabbitMQController', () => {
   let controller: RabbitMQController;

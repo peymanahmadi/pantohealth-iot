@@ -2,7 +2,7 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { XRayDataPoint, XRayDocument } from './signals.schema';
-import { XRayMessageDto } from '@pantohealth/dtos';
+import { XRayMessageDto } from '../dtos/xray-message.dto';
 
 @Injectable()
 export class SignalsService {

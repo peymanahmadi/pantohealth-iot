@@ -1,8 +1,8 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { RabbitMQService } from './rabbitmq.service';
 import { ApiTags, ApiBody, ApiResponse } from '@nestjs/swagger';
-import { XRayMessageDto } from '@pantohealth/dtos';
-import { SampleDataService } from '../sample-data/sample-data.service';
+import { SampleDataService } from '../sample-data/sample-data.service'
+import { XRayMessageDto } from '../dtos/xray-message.dto';
 
 @Controller('producer')
 @ApiTags('Producer')
@@ -26,28 +26,6 @@ export class ProducerController {
   @ApiResponse({ status: 200, description: 'Sample x-ray data sent to queue' })
   async sendSampleXRayData() {
     const sampleData = this.sampleDataService.generateSampleXRayData();
-    // const sampleData: XRayMessageDto = {
-    //   deviceId: `device-${Math.random().toString(36).substring(2, 15)}`,
-    //   time: Date.now(),
-    //   data: [
-    //     {
-    //       time: Date.now(),
-    //       coordinatesAndSpeed: [
-    //         Math.random() * 100,
-    //         Math.random() * 100,
-    //         Math.random() * 50,
-    //       ],
-    //     },
-    //     {
-    //       time: Date.now() + 1000,
-    //       coordinatesAndSpeed: [
-    //         Math.random() * 100,
-    //         Math.random() * 100,
-    //         Math.random() * 50,
-    //       ],
-    //     },
-    //   ],
-    // };
     await this.rabbitMQService.sendXRayData(sampleData);
     return { message: 'Sample x-ray data sent to queue', data: sampleData };
   }

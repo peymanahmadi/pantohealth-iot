@@ -5,9 +5,9 @@ import { ProducerController } from './producer.controller';
 import { SampleDataService } from '../sample-data/sample-data.service';
 
 @Module({
-    imports: [ConfigModule],
-    controllers: [ProducerController],
-    providers: [RabbitMQService, SampleDataService],
-    exports: [RabbitMQService],
+  imports: [ConfigModule],
+  controllers: [ProducerController],
+  providers: [RabbitMQService, SampleDataService],
+  exports: [RabbitMQService],
 })
 export class RabbitMQModule {}

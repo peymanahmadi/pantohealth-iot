@@ -13,7 +13,7 @@ import {
 import { ApiBody, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignalsService } from './signals.service';
 import { XRayDocument } from './signals.schema';
-import { XRayMessageDto } from '@pantohealth/dtos';
+import { XRayMessageDto } from '../dtos/xray-message.dto';
 
 @Controller('signals')
 @ApiTags('Signals')

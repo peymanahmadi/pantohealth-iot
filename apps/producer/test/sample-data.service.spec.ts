@@ -1,4 +1,4 @@
-import { XRayMessageDto } from '@pantohealth/dtos';
+import { XRayMessageDto } from '../src/dtos/xray-message.dto';
 import { SampleDataService } from '../src/sample-data/sample-data.service';
 
 describe('SampleDataService', () => {

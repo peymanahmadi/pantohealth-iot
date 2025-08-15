@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { XRayMessageDto } from '@pantohealth/dtos';
+import { XRayMessageDto } from '../dtos/xray-message.dto';
 
 @Injectable()
 export class SampleDataService {
